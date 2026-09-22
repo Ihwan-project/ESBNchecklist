@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="Formulir checklist pengujian sistem transaksi SBSN Ritel Online oleh Mitra Distribusi (DJPPR, Kementerian Keuangan).">
+<title>Checklist Simulasi Demo Sistem Transaksi SBSN Ritel Online</title>
+<style>
+:root{
+  --ink:#14181f; --muted:#5b6675; --line:#d7dde5; --line2:#eef1f5;
+  --bg:#f4f6f9; --card:#ffffff;
+  --brand:#0b3d6b; --brand2:#12598f; --accent:#e8f0f7;
+  --ok:#0f7a3d; --okbg:#e7f5ec; --ng:#b3261e; --ngbg:#fdeceb; --na:#6b7280; --nabg:#eef0f2;
+  --warn:#8a5a00; --warnbg:#fff5e0;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font:14px/1.55 -apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;}
+.wrap{max-width:1280px;margin:0 auto;padding:18px 16px 80px}
+
+/* ---------- Header ---------- */
+header.doc{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin-bottom:14px}
+header.doc h1{margin:0 0 2px;font-size:19px;letter-spacing:.2px;color:var(--brand)}
+header.doc .sub{color:var(--muted);font-size:12.5px;margin-bottom:14px}
+.meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:10px 16px}
+.f{display:flex;flex-direction:column;gap:3px}
+.f label{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.4px}
+.f input,.f select{border:1px solid var(--line);border-radius:7px;padding:6px 8px;font:inherit;font-size:13px;background:#fff}
+.f input:focus,.f select:focus{outline:2px solid #b9d5ee;border-color:var(--brand2)}
+
+details.ref-box{margin-top:14px;border:1px solid var(--line);border-radius:9px;background:#fbfcfe}
+details.ref-box>summary{cursor:pointer;padding:9px 12px;font-weight:600;font-size:13px;color:var(--brand)}
+details.ref-box .inner{padding:0 12px 12px}
+table.mini{border-collapse:collapse;width:100%;margin-top:6px;font-size:12.5px}
+table.mini th,table.mini td{border:1px solid var(--line);padding:5px 8px;text-align:left}
+table.mini th{background:var(--accent)}
+
+/* ---------- Kartu data investor ---------- */
+.invcard{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:14px}
+.invhead{display:flex;flex-wrap:wrap;gap:4px 14px;align-items:baseline;margin-bottom:10px}
+.invhead h2{margin:0;font-size:15px;color:var(--brand)}
+.invblock{margin-top:12px}
+.invtitle{font-size:12.5px;color:var(--muted);margin-bottom:5px}
+.tag{display:inline-block;border-radius:5px;padding:1px 7px;font-weight:700;font-size:11.5px;margin-right:6px}
+.tag.ta{background:#e5f0fb;color:var(--brand)}
+.tag.tb{background:#eaf5ec;color:var(--ok)}
+table.invtbl{width:100%;border-collapse:collapse;font-size:12.5px;table-layout:fixed}
+table.invtbl th{background:var(--accent);color:var(--brand);text-align:left;font-size:11px;text-transform:uppercase;
+  letter-spacing:.4px;padding:5px 7px;border:1px solid var(--line)}
+table.invtbl td{border:1px solid var(--line);padding:0}
+table.invtbl th.w-no{width:38px} table.invtbl th.w-act{width:56px}
+table.invtbl td.n{padding:5px 7px;color:var(--muted);font-weight:600;text-align:center;font-size:12px}
+table.invtbl td.a{padding:3px;text-align:center}
+table.invtbl input{width:100%;border:0;background:transparent;font:inherit;font-size:12.5px;padding:6px 7px;color:var(--ink)}
+table.invtbl input:focus{outline:2px solid #b9d5ee;border-radius:4px;background:#fff}
+table.invtbl tr:nth-child(even) td{background:#fbfcfe}
+.rm{border:1px solid var(--line);background:#fff;color:var(--ng);border-radius:5px;padding:2px 8px;font-size:12px;cursor:pointer;line-height:1.4}
+.rm:hover{background:var(--ngbg);border-color:#eeb4b0}
+.addrow{margin-top:7px;border:1px dashed #b6c2d1;background:#fbfdff;color:var(--brand2);
+  border-radius:7px;padding:5px 11px;font-size:12.5px;cursor:pointer}
+.addrow:hover{background:#f0f6fc}
+
+/* ---------- Toolbar ---------- */
+.toolbar{position:sticky;top:0;z-index:30;background:rgba(244,246,249,.93);backdrop-filter:blur(6px);
+  border:1px solid var(--line);border-radius:11px;padding:10px 12px;margin-bottom:12px;
+  display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+button{font:inherit;font-size:12.5px;border:1px solid var(--line);background:#fff;color:var(--ink);
+  padding:6px 11px;border-radius:7px;cursor:pointer}
+button:hover{background:#f0f4f9;border-color:#b9c6d6}
+button.primary{background:var(--brand);border-color:var(--brand);color:#fff}
+button.primary:hover{background:var(--brand2)}
+.spacer{flex:1}
+.stats{display:flex;gap:6px;flex-wrap:wrap;align-items:center;font-size:12px}
+.pill{border-radius:999px;padding:3px 10px;font-weight:600;border:1px solid transparent}
+.pill.p{background:var(--okbg);color:var(--ok);border-color:#bfe3cd}
+.pill.f{background:var(--ngbg);color:var(--ng);border-color:#f3c9c6}
+.pill.n{background:var(--nabg);color:var(--na);border-color:#dcdfe3}
+.pill.t{background:#e8eef5;color:var(--brand)}
+.bar{height:7px;border-radius:999px;background:#e3e8ee;overflow:hidden;min-width:140px;flex:1}
+.bar>i{display:block;height:100%;background:linear-gradient(90deg,#1a7f4b,#2ea86a);width:0%}
+
+/* ---------- Table ---------- */
+table.main{width:100%;border-collapse:collapse;background:var(--card);
+  border:1px solid var(--line);border-radius:12px;table-layout:fixed}
+table.main thead th{background:var(--brand);color:#fff;font-size:12px;text-transform:uppercase;
+  letter-spacing:.6px;padding:9px 10px;text-align:left;position:sticky;top:var(--tbh,64px);z-index:20}
+col.c-no{width:66px} col.c-p{width:31%} col.c-o{width:37%} col.c-r{width:auto}
+table.main td{border-top:1px solid var(--line2);padding:9px 10px;vertical-align:top}
+tr.part td{background:var(--brand2);color:#fff;padding:10px 12px;font-weight:700;font-size:13.5px;letter-spacing:.3px}
+tr.part .note{display:block;font-weight:400;font-size:12px;opacity:.95;margin-top:4px;line-height:1.5}
+tr.sub td{background:var(--accent);color:var(--brand);font-weight:700;font-size:13px;padding:7px 12px}
+tr.item:hover td{background:#fafcfe}
+tr.item.st-pass td:first-child{box-shadow:inset 4px 0 0 var(--ok)}
+tr.item.st-fail td:first-child{box-shadow:inset 4px 0 0 var(--ng)}
+tr.item.st-na   td:first-child{box-shadow:inset 4px 0 0 var(--na)}
+td.no{font-weight:700;color:var(--muted);font-size:12px;font-variant-numeric:tabular-nums}
+td.proses{font-size:13px}
+td.output{font-size:12.7px;color:#26303c}
+
+.ref{display:inline-block;color:var(--warn);background:var(--warnbg);border:1px solid #f0dfb4;
+  border-radius:6px;padding:1px 6px;font-size:11.5px;margin-top:3px}
+.ok{color:var(--ok);font-weight:700} .ng{color:var(--ng);font-weight:700}
+ol.alpha{list-style:lower-alpha;margin:5px 0 0 18px;padding:0}
+ol.num{margin:5px 0 0 18px;padding:0}
+ul.dash{list-style:none;margin:5px 0 0 4px;padding:0}
+ul.dash li:before{content:"– ";color:var(--muted)}
+ul.tick{list-style:none;margin:5px 0 0 2px;padding:0}
+ul.tick li{margin:2px 0;padding-left:18px;position:relative}
+ul.tick li:before{content:"\2714";position:absolute;left:0;color:var(--brand2);font-size:11px}
+.tbl1{border-left:3px solid var(--brand2);padding-left:10px}
+.tbl1-h{font-weight:700;color:var(--brand);margin-top:8px;font-size:12.5px}
+.tbl1 ol.num>li{margin:3px 0}
+.warn{margin-top:8px;background:var(--warnbg);border:1px solid #f0dfb4;border-radius:7px;padding:6px 8px;font-size:12px}
+.collapsed .tbl1{max-height:118px;overflow:hidden;position:relative}
+.more{margin-top:5px;font-size:11.5px;color:var(--brand2);cursor:pointer;text-decoration:underline;display:inline-block}
+
+/* ---------- Result cell ---------- */
+.res{display:flex;flex-direction:column;gap:7px}
+.radios{display:flex;gap:5px;flex-wrap:wrap}
+.radios label{display:inline-flex;align-items:center;gap:4px;border:1px solid var(--line);border-radius:7px;
+  padding:3px 9px;font-size:12px;cursor:pointer;background:#fff;user-select:none}
+.radios label:hover{background:#f2f6fa}
+.radios input{accent-color:var(--brand2);margin:0}
+.radios label.sel-p{background:var(--okbg);border-color:#9fd4b5;color:var(--ok);font-weight:600}
+.radios label.sel-f{background:var(--ngbg);border-color:#eeb4b0;color:var(--ng);font-weight:600}
+.radios label.sel-n{background:var(--nabg);border-color:#d3d7dd;color:var(--na);font-weight:600}
+textarea.note{width:100%;min-height:44px;border:1px solid var(--line);border-radius:7px;padding:5px 7px;
+  font:inherit;font-size:12px;resize:vertical;background:#fff}
+textarea.note:focus{outline:2px solid #b9d5ee;border-color:var(--brand2)}
+.shots{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.shot{position:relative;width:66px;height:48px;border:1px solid var(--line);border-radius:6px;overflow:hidden;background:#fff;cursor:zoom-in}
+.shot img{width:100%;height:100%;object-fit:cover;display:block}
+.shot .del{position:absolute;top:1px;right:1px;background:rgba(0,0,0,.62);color:#fff;border:0;border-radius:4px;
+  width:16px;height:16px;line-height:14px;font-size:12px;padding:0;cursor:pointer}
+.addshot{border:1px dashed #b6c2d1;border-radius:6px;background:#fbfdff;color:var(--brand2);
+  font-size:11.5px;padding:5px 9px;cursor:pointer}
+.hint{font-size:11px;color:var(--muted)}
+
+/* ---------- Lightbox / footer ---------- */
+#lb{position:fixed;inset:0;background:rgba(10,14,20,.86);display:none;align-items:center;justify-content:center;z-index:99;padding:24px}
+#lb img{max-width:96vw;max-height:92vh;border-radius:8px;box-shadow:0 8px 40px rgba(0,0,0,.5)}
+.signs{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;margin-top:22px;
+  background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 20px}
+.sign{font-size:12.5px}
+.sign .role{font-weight:600;margin-bottom:52px}
+.sign .line{border-top:1px solid #98a3b1;padding-top:4px;color:var(--muted)}
+.foot{margin-top:16px;font-size:11.5px;color:var(--muted);text-align:center}
+
+/* ---------- Print ---------- */
+@media print{
+  body{background:#fff}
+  .toolbar,.addshot,.shot .del,.hint,.more,.addrow,.rm,table.invtbl th.w-act,table.invtbl td.a{display:none !important}
+  .invcard{border-color:#999;border-radius:0;break-inside:avoid}
+  table.invtbl th{background:#e8f0f7 !important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  table.invtbl input{padding:3px 5px}
+  .tag{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .wrap{max-width:none;padding:0}
+  header.doc,table.main,.signs{border-color:#999;border-radius:0}
+  table.main thead th{position:static;background:#0b3d6b !important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  tr.part td,tr.sub td,.pill,.ref,.warn,.radios label{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  tr{break-inside:avoid}
+  .collapsed .tbl1{max-height:none;overflow:visible}
+  details.ref-box{break-inside:avoid}
+  details.ref-box[open]>summary{list-style:none}
+  input::placeholder,textarea::placeholder{color:transparent !important}
+  .signs{break-inside:avoid}
+  textarea.note{border:0;border-bottom:1px solid #bbb;border-radius:0;min-height:0;height:auto}
+  .shot{width:150px;height:auto}
+  .shot img{height:auto;object-fit:contain}
+  @page{size:A4 landscape;margin:11mm}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="doc">
+  <h1>Checklist Simulasi Demo Sistem Transaksi SBSN Ritel Online</h1>
+  <div class="sub">Formulir pengujian sistem penjualan SBSN Ritel oleh Mitra Distribusi &mdash; Direktorat Jenderal Pengelolaan Pembiayaan dan Risiko (DJPPR), Kementerian Keuangan</div>
+  <div class="meta">
+    <div class="f"><label>Mitra Distribusi</label><input id="m_midis" placeholder="Nama Mitra Distribusi"></div>
+    <div class="f"><label>Evaluator</label><input id="m_eval" placeholder="Nama evaluator"></div>
+    <div class="f"><label>Tanggal Pengujian</label><input id="m_tgl" type="date"></div>
+    <div class="f"><label>Environment</label><input id="m_env" value="Development / Mock Line"></div>
+    <div class="f"><label>Seri SR yang diuji</label><input id="m_sr" placeholder="mis. SR-xxx"></div>
+    <div class="f"><label>Seri ST yang diuji</label><input id="m_st" placeholder="mis. ST-xxx"></div>
+    <div class="f"><label>Investor A aktif (diuji)</label><select id="m_invA"></select></div>
+    <div class="f"><label>Investor B aktif (diuji)</label><select id="m_invB"></select></div>
+  </div>
+
+  <details class="ref-box">
+    <summary>Referensi: jenis investor dan alur pengujian</summary>
+    <div class="inner">
+      <table class="mini">
+        <tr><th style="width:130px">Jenis</th><th>Keterangan</th></tr>
+        <tr><td><b>Investor A</b></td><td>Investor baru (belum terdaftar pada sistem e-SBN)</td></tr>
+        <tr><td><b>Investor B</b></td><td>Investor yang telah didaftarkan pada e-SBN oleh Midis lain</td></tr>
+      </table>
+      <p style="margin:12px 0 0;font-size:12.5px"><b>Alur pengujian pada formulir ini:</b></p>
+      <ol style="margin:4px 0 0 18px;font-size:12.5px;padding:0">
+        <li><b>Investor A</b>: Registrasi &rarr; Pemesanan &amp; Pembayaran SR &rarr; Ubah Parameter Seri &rarr; Pemesanan SR &rarr; Pemesanan ST</li>
+        <li><b>Investor B</b>: Registrasi &rarr; Update Profile/Data Investor &rarr; Pemesanan &amp; Pembayaran ST</li>
+        <li><b>Early Redemption</b>: Investor A (cek menu &amp; eligibilitas) &amp; Investor B (pengujian nominal)</li>
+        <li><b>Cek e-mail konfirmasi</b> yang diterima Investor A dan Investor B</li>
+      </ol>
+      <p style="margin:10px 0 0;font-size:12px;color:#5b6675">Sumber: <i>Checklist Requirement Demo Sistem</i> &mdash; Tabel 1 (Disclaimer, Ketentuan &amp; Syarat) dan Tabel 2 (Skenario Pengujian).</p>
+    </div>
+  </details>
+</header>
+
+<section class="invcard">
+  <div class="invhead">
+    <h2>Data Investor Pengujian</h2>
+    <span class="hint">Nama investor dapat diubah langsung pada kolom di bawah; gunakan tombol <b>+ Tambah</b> untuk menambah investor baru. Data ikut tersimpan pada berkas progres, ekspor CSV, dan hasil cetak.</span>
+  </div>
+
+  <div class="invblock">
+    <div class="invtitle"><span class="tag ta">Investor A</span> Investor baru &mdash; belum terdaftar pada sistem e-SBN</div>
+    <table class="invtbl">
+      <thead><tr><th class="w-no">No.</th><th>Nama Investor</th><th>Nomor SID</th><th>No. KTP</th><th>Tanggal Lahir</th><th>Alamat E-mail</th><th>Keterangan</th><th class="w-act">Aksi</th></tr></thead>
+      <tbody id="invA"></tbody>
+    </table>
+    <button class="addrow" onclick="addInv('A')">+ Tambah Investor A</button>
+  </div>
+
+  <div class="invblock">
+    <div class="invtitle"><span class="tag tb">Investor B</span> Telah didaftarkan pada e-SBN oleh Midis lain</div>
+    <table class="invtbl">
+      <thead><tr><th class="w-no">No.</th><th>Nama Investor</th><th>Nomor SID</th><th>No. KTP</th><th>Tanggal Lahir</th><th>Alamat E-mail</th><th>Keterangan</th><th class="w-act">Aksi</th></tr></thead>
+      <tbody id="invB"></tbody>
+    </table>
+    <button class="addrow" onclick="addInv('B')">+ Tambah Investor B</button>
+    <div class="hint" style="margin-top:6px">Isi data Investor B sesuai dokumen requirement pengujian. Data pribadi tidak disimpan pada halaman ini &mdash; gunakan tombol <b>Simpan progres</b> untuk menyimpannya sebagai berkas lokal.</div>
+  </div>
+</section>
+
+<div class="toolbar">
+  <button class="primary" onclick="exportCSV()">&#8681; Ekspor CSV / Excel</button>
+  <button onclick="window.print()">&#128424; Cetak / Simpan PDF</button>
+  <button onclick="saveJSON()">&#128190; Simpan progres</button>
+  <button onclick="document.getElementById('loadfile').click()">&#128193; Muat progres</button>
+  <input type="file" id="loadfile" accept="application/json" style="display:none" onchange="loadJSON(this)">
+  <button onclick="setAll('')">Bersihkan status</button>
+  <button onclick="toggleAll()" id="btnExp">Ringkas/Perluas ketentuan</button>
+  <select id="filter" onchange="applyFilter()" style="border:1px solid var(--line);border-radius:7px;padding:6px 9px;font:inherit;font-size:12.5px">
+    <option value="all">Tampilkan: Semua baris</option>
+    <option value="empty">Belum diisi</option>
+    <option value="fail">Fail saja</option>
+    <option value="pass">Pass saja</option>
+  </select>
+  <div class="spacer"></div>
+  <div class="stats">
+    <span class="pill t" id="s-tot">0/0</span>
+    <span class="pill p" id="s-p">Pass 0</span>
+    <span class="pill f" id="s-f">Fail 0</span>
+    <span class="pill n" id="s-n">N/A 0</span>
+    <span class="bar"><i id="s-bar"></i></span>
+  </div>
+</div>
+
+<table class="main">
+  <colgroup><col class="c-no"><col class="c-p"><col class="c-o"><col class="c-r"></colgroup>
+  <thead><tr><th>No.</th><th>Proses</th><th>Output yang Diharapkan</th><th>Result (Checklist)</th></tr></thead>
+  <tbody id="tbody"></tbody>
+</table>
+
+<div class="signs">
+  <div class="sign"><div class="role">Diuji oleh (Mitra Distribusi)</div><div class="line">Nama &amp; Tanda Tangan / Tanggal</div></div>
+  <div class="sign"><div class="role">Disaksikan oleh (Evaluator 1)</div><div class="line">Nama &amp; Tanda Tangan / Tanggal</div></div>
+  <div class="sign"><div class="role">Disaksikan oleh (Evaluator 2)</div><div class="line">Nama &amp; Tanda Tangan / Tanggal</div></div>
+</div>
+
+<div class="foot">Formulir checklist dibuat mengikuti dokumen <i>Checklist Requirement Demo Sistem</i> (Tabel 1 &amp; Tabel 2). Disimpan sebagai berkas HTML mandiri &mdash; buka langsung di Chrome.</div>
+</div>
+
+<div id="lb" onclick="this.style.display='none'"><img id="lbimg" alt=""></div>
+
+<script>
+/* Data skenario pengujian — diturunkan dari "Checklist Requirement Demo Sistem TRIMEGAH" */
+const KETENTUAN_REGISTRASI = `
+<div class="tbl1">
+<div class="tbl1-h">Checklist box — Saya menyatakan telah:</div>
+<ul class="tick">
+<li>Mengisi data dengan benar dan lengkap;</li>
+<li>Mengerti dan menyetujui <u>ketentuan dan persyaratan</u> penggunaan sistem layanan transaksi SBN Ritel secara elektronik.</li>
+</ul>
+<div class="tbl1-h">Ketentuan dan persyaratan Registrasi (wajib tampil lengkap &amp; dapat dibaca):</div>
+<ol class="num">
+<li>Layanan transaksi SBN Ritel secara elektronik adalah fasilitas pemesanan SBN Ritel yang dapat dilakukan oleh investor melalui media elektronik dan jaringan internet yang terintegrasi dengan sistem SBN Ritel pada Kementerian Keuangan.</li>
+<li>Hukum yang berlaku dalam rangka proses registrasi dan pemesanan SBN Ritel adalah hukum Indonesia.</li>
+<li>Pengguna setuju untuk mematuhi peraturan terkait yang berlaku di wilayah Negara Kesatuan Republik Indonesia.</li>
+<li>Pengguna adalah individu yang cakap dan memiliki kemampuan serta kapasitas dalam berinvestasi dalam SBN Ritel.</li>
+<li>Pengguna telah memahami dan menyetujui seluruh ketentuan dalam proses registrasi SBN Ritel secara elektronik serta melengkapi semua data yang dibutuhkan secara benar dan lengkap. Pemerintah tidak bertanggung jawab atas kesalahan atau ketidaklengkapan data yang disampaikan oleh Pengguna.</li>
+<li>Pengguna wajib melakukan registrasi dengan menyiapkan data yang sekurang-kurangnya terdiri dari Surat Elektronik (e-mail), Single Investor Identification (SID), Rekening Dana, dan Rekening Surat Berharga (Efek).</li>
+<li>Data registrasi yang disampaikan Pengguna melalui sistem SBN Ritel ini antara lain meliputi data e-mail, SID, Rekening Dana, Rekening Surat Berharga (Efek) akan menjadi milik Pemerintah, dan Pengguna memberikan persetujuan kepada Pemerintah untuk menggunakan data tersebut dalam rangka pemasaran dan/atau transaksi SBN Ritel dengan mengacu pada ketentuan kerahasiaan data dan peraturan lain yang berlaku di wilayah NKRI.</li>
+<li>Pengguna bertanggung jawab secara pribadi untuk menjaga keamanan dan kerahasiaan akun, kata sandi, dan/atau standar keamanan lainnya untuk semua aktivitas dalam penggunaan transaksi SBN Ritel secara elektronik.</li>
+<li>Pengguna membebaskan Pemerintah dari segala tuntutan menyangkut penyalahgunaan akun, kata sandi, dan/atau standar keamanan lainnya.</li>
+<li>Dalam hal terdapat kendala dalam penggunaan transaksi SBN Ritel secara elektronik, Pengguna wajib segera menghubungi mitra distribusi.</li>
+<li>Pengguna bertanggung jawab atas segala biaya, klaim, kerusakan, kerugian (termasuk namun tidak terbatas pada kerugian yang timbul dari Transaksi) atau kewajiban lainnya karena ketidakmampuan dan ketidakpahaman Investor dalam menggunakan layanan transaksi SBN Ritel secara elektronik.</li>
+<li>Pengguna membebaskan Pemerintah dan/atau Mitra Distribusi dari segala kerugian yang timbul atas terjadinya kerusakan sistem layanan transaksi SBN Ritel secara elektronik dan/atau keadaan darurat yang berada di luar kendali Pemerintah dan/atau Mitra Distribusi yang mengakibatkan sistem layanan transaksi SBN Ritel secara elektronik tidak dapat bekerja secara normal. Kejadian atau keadaan darurat (force majeure) tersebut mencakup namun tidak terbatas pada hal-hal sebagai berikut:
+  <ol class="alpha">
+  <li>bencana alam;</li>
+  <li>perang yang timbul dari atau sebagai akibat perang;</li>
+  <li>tindakan sabotase oleh teroris;</li>
+  <li>Pemberontakan;</li>
+  <li>gempa bumi;</li>
+  <li>badai letusan gunung berapi;</li>
+  <li>banjir, badai, kondisi cuaca luar biasa buruk, yang dinyatakan resmi oleh Pemerintah Republik Indonesia; perubahan situasi kondisi politik dan ekonomi maupun kebijakan pemerintah yang luar biasa yang berakibat tidak kondusif untuk melakukan transaksi SBN Ritel; dan/atau</li>
+  <li>perubahan atas peraturan perundang-undangan yang berpengaruh langsung atas transaksi SBN Ritel.</li>
+  </ol>
+</li>
+</ol>
+<div class="warn"><b>Catatan Penting:</b> Registrasi <b>tidak bisa dilanjutkan</b> jika ketentuan dan syarat belum dibaca.</div>
+</div>`;
+
+const KETENTUAN_PEMESANAN = `
+<div class="tbl1">
+<div class="tbl1-h">Checklist box — Saya menyatakan:</div>
+<ul class="tick">
+<li>Telah membaca dan memahami isi <u>Memorandum Informasi</u>;</li>
+<li>Telah menyampaikan data pemesanan dengan benar dan lengkap;</li>
+<li>Setuju untuk menguasakan (wakalah) pengelolaan dana investasi pada Sukuk Tabungan dan seluruh hak terkait Aset SBSN Sukuk Tabungan kepada Perusahaan Penerbit SBSN Indonesia sebagai Wali Amanat untuk kegiatan investasi yang menghasilkan keuntungan (Untuk Sukuk Tabungan, dalam hal telah menjadi pemegang atau pemilik Sukuk Tabungan).</li>
+<li>Setuju bahwa pemesanan yang telah disubmit tidak dapat diubah/dibatalkan dan jika tidak dilakukan pembayaran dalam periode tertentu setelah menerima kode billing maka secara otomatis batal/menjadi kadaluarsa.</li>
+</ul>
+<div class="warn"><b>Catatan Penting:</b> Memorandum Informasi <b>dapat dibaca</b> oleh investor (tautan aktif &amp; dokumen terbuka).</div>
+<div class="tbl1-h">Tambahan untuk Midis LKSPWU (jika berlaku):</div>
+<ul class="tick">
+<li>Persetujuan pemesanan ini sebagai Akta Ikrar Wakaf elektronik tanpa penandatanganan langsung, yang akan dinyatakan batal jika tidak dilakukan pembayaran atau status pemesanan berubah menjadi unpaid order (dalam hal melakukan pemesanan untuk Cash Waqf Linked Sukuk).</li>
+<li>Setuju untuk menerima kuasa dari Nazhir untuk menginvestasikan dana wakaf uang dalam Cash Waqf Linked Sukuk (CWLS).</li>
+<li>Setuju untuk menguasakan (wakalah) pengelolaan dana investasi pada CWLS dan seluruh hak terkait Aset SBSN CWLS kepada Perusahaan Penerbit SBSN Indonesia sebagai Wali Amanat untuk kegiatan investasi yang menghasilkan keuntungan (dalam hal telah menjadi pemegang atau pemilik CWLS).</li>
+<li>Menyetujui dilakukan pendebetan rekening dana wakif dalam rangka pemindahbukuan hasil investasi CWLS (kupon/imbalan) pada tiap-tiap tanggal pembayaran kupon/imbalan CWLS oleh Mitra Distribusi untuk dikreditkan kepada rekening Nazhir yang ditunjuk sebagaimana tercantum dalam memorandum informasi.</li>
+</ul>
+</div>`;
+
+const KETENTUAN_REDEMPTION = `
+<div class="tbl1">
+<div class="tbl1-h">Checklist box — Saya menyatakan:</div>
+<ul class="tick">
+<li>Telah menyampaikan data redemption dengan benar dan lengkap.</li>
+<li>Setuju bahwa data redemption yang telah disubmit tidak dapat diubah/dibatalkan.</li>
+</ul>
+<div class="warn"><b>Catatan Penting:</b> Disclaimer wajib tampil sebelum submit early redemption dan istilah sesuai Memo Info / ketentuan DJPPR.</div>
+</div>`;
+
+const DATA = [
+  { t:'part', id:'0', title:'PRA-PENGUJIAN (Prasyarat Demo)' },
+  { t:'sub', id:'0.1', title:'Persiapan & Koordinasi' },
+  { t:'item', id:'0.1.a', p:'Midis melakukan <b>testing internal</b> seluruh skenario pada form ini (Tabel 1 &amp; Tabel 2).', o:'Seluruh skenario telah diuji internal dan <b>screenshot setiap tahapan</b> pengujian sistem elektronik dilampirkan.' },
+  { t:'item', id:'0.1.b', p:'Pemeriksaan <b>istilah</b> yang digunakan pada sistem.', o:'Seluruh istilah pada sistem telah sesuai dengan <b>Memo Info</b> (mis. penyebutan seri, kupon/imbalan, early redemption, kode billing, NTPN).' },
+  { t:'item', id:'0.1.c', p:'Pemeriksaan <b>disclaimer serta ketentuan &amp; syarat</b>.', o:'Disclaimer, ketentuan &amp; syarat telah sesuai dengan ketentuan <b>DJPPR</b> (redaksi identik dengan Tabel 1).' },
+  { t:'item', id:'0.1.d', p:'Koordinasi Midis–Evaluator untuk kebutuhan testing.', o:'Telah disepakati: pembukaan seri (SR &amp; ST), perubahan parameter seri, penghapusan data investor, dan kebutuhan testing lainnya pada environment <i>development</i>.' },
+
+  { t:'part', id:'A', title:'BAGIAN A — INVESTOR A: Registrasi s.d. Pemesanan',
+    note:'Investor A = investor <b>baru</b> (belum terdaftar pada sistem e-SBN). Alur: Registrasi → Pemesanan &amp; Pembayaran SR → Ubah Parameter Seri → Pemesanan SR → Pemesanan ST.' },
+
+  { t:'sub', id:'A.1', title:'A.1 Registrasi Investor A' },
+  { t:'item', id:'A.1.a', p:'Masuk menu <b>Registrasi</b> e-SBN.', o:'Menu registrasi e-SBN dapat diakses; halaman/form registrasi terbuka tanpa error.' },
+  { t:'item', id:'A.1.b', p:'Muncul <b>form registrasi</b> lengkap.', o:'Form registrasi tampil dan dapat diisi, minimal terdapat field:<ol class="alpha"><li>Nama</li><li>SID</li><li>Rekening Dana</li><li>Rekening Surat Berharga</li></ol>' },
+  { t:'item', id:'A.1.c', p:'Input data <b>Investor A</b> (investor baru).', o:'Seluruh data investor A dapat diinput; validasi field (format SID, no. rekening, e-mail) berjalan.' },
+  { t:'item', id:'A.1.d', p:'<b>Disclaimer, Ketentuan &amp; Syarat</b> pada proses Registrasi<br><span class="ref">mengikuti ketentuan pada Tabel 1 poin 1</span>', o: KETENTUAN_REGISTRASI },
+  { t:'item', id:'A.1.e', p:'Submit data registrasi.', o:'Data berhasil di-<b>submit</b> pada sistem Midis dan <b>investor menerima notifikasi</b>.' },
+  { t:'item', id:'A.1.f', p:'Perekaman data ke Database e-SBN.', o:'Data investor A berhasil di-<b>update</b> di Database e-SBN. <span class="ref">Koordinasi dengan evaluator</span>' },
+
+  { t:'sub', id:'A.2', title:'A.2 Pemesanan &amp; Pembayaran SR' },
+  { t:'item', id:'A.2.a', p:'Investor A masuk ke menu <b>Pemesanan</b>.', o:'Menampilkan seri yang sedang ditawarkan. <span class="ref">Koordinasi dengan Evaluator untuk membuka seri SBSN pada environment development — parameter: min pemesanan Rp1 juta, max pemesanan Rp3 miliar, kelipatan Rp1 juta, kuota nasional Rp3 triliun.</span>' },
+  { t:'item', id:'A.2.b', p:'Pilih <b>seri SR</b> yang sedang dibuka.', o:'Menampilkan form pemesanan dan <b>informasi umum produk/seri</b>, paling sedikit memuat: nama produk/seri, masa penawaran (tanggal dan jam), kupon, tanggal setelmen (tanggal), jatuh tempo, kuota nasional, minimal order, kelipatan pemesanan, kuota per individu.' },
+  { t:'item', id:'A.2.c', p:'Mengisi data pemesanan — <b>Pemesanan SR Rp5.000.000</b>', o:'<span class="ok">BERHASIL</span> — pemesanan diterima sistem. <span class="ref">Sertakan screenshot pemesanan berhasil.</span>' },
+  { t:'item', id:'A.2.d', p:'<b>Disclaimer, Ketentuan &amp; Syarat</b> pada proses Pemesanan<br><span class="ref">mengikuti ketentuan pada Tabel 1 poin 2</span>', o: KETENTUAN_PEMESANAN },
+  { t:'item', id:'A.2.e', p:'Submit &amp; perekaman pemesanan.', o:'Data berhasil di-submit dan <b>tercatat pada sistem e-SBN</b>. <span class="ref">Koordinasi dengan evaluator</span>' },
+
+  { t:'sub', id:'A.3', title:'A.3 Ubah Parameter Seri' },
+  { t:'item', id:'A.3.a', p:'Koordinasi dengan Evaluator untuk <b>perubahan parameter seri SR</b>.', o:'Parameter seri SR berubah menjadi: <b>minimal Rp1 ribu, kelipatan Rp1 ribu, kuota individu Rp3,5 miliar, kuota nasional Rp350 juta, batas bayar 2 menit</b>.' },
+
+  { t:'sub', id:'A.4', title:'A.4 Pemesanan SR (setelah parameter diubah)' },
+  { t:'item', id:'A.4.a', p:'Pilih <b>seri SR</b> yang sedang dibuka.', o:'Menampilkan form pemesanan dan <b>informasi umum produk/seri dengan parameter yang sudah ter-update</b> (min Rp1 ribu, kelipatan Rp1 ribu, kuota individu Rp3,5 M, kuota nasional Rp350 jt, batas bayar 2 menit).' },
+  { t:'item', id:'A.4.b1', p:'Mengisi data pemesanan — <b>Pemesanan SR Rp360.000.000</b>', o:'<span class="ng">GAGAL</span> — muncul error message <b>“Melebihi kuota nasional”</b>. <span class="ref">Sertakan screenshot error message.</span>' },
+  { t:'item', id:'A.4.b2', p:'Mengisi data pemesanan — <b>Pemesanan SR Rp1.000</b>', o:'<span class="ok">BERHASIL</span> — pemesanan diterima sistem. <span class="ref">Sertakan screenshot pemesanan berhasil.</span>' },
+
+  { t:'sub', id:'A.5', title:'A.5 Pemesanan ST (Investor A)' },
+  { t:'item', id:'A.5.a', p:'Pilih <b>seri ST</b> yang sedang dibuka.', o:'Menampilkan form pemesanan dan <b>informasi umum produk/seri</b>, paling sedikit memuat: nama produk/seri, masa penawaran (tanggal dan jam), kupon, tanggal setelmen (tanggal), jatuh tempo, kuota nasional, minimal order, kelipatan pemesanan, kuota per individu.' },
+  { t:'item', id:'A.5.b', p:'Mengisi data pemesanan — <b>Pemesanan ST Rp3.000.000.000</b>', o:'<span class="ok">BERHASIL</span> — pemesanan diterima sistem. <span class="ref">Sertakan screenshot pemesanan berhasil.</span>' },
+  { t:'item', id:'A.5.c', p:'Cek menu <b>portofolio investor / monitoring pemesanan / historis pemesanan</b> Investor A.<br><span class="ref">(opsional, menyesuaikan fitur masing-masing Midis)</span>', o:'Seluruh transaksi tercatat. Data setiap pemesanan yang ditampilkan meliputi:<ul class="dash"><li>Nama produk/seri</li><li>Kode Pemesanan</li><li>Status (<i>Verified order, Completed order &amp; Unpaid order</i>)</li><li>Kode Billing</li><li>NTPN</li><li>Nominal</li><li>Batas Waktu Pembayaran</li></ul><span class="ref">Tahap pembayaran untuk Mock – Development Line dilakukan secara otomatis oleh sistem e-SBN.</span>' },
+
+  { t:'part', id:'B', title:'BAGIAN B — INVESTOR B: Registrasi s.d. Pemesanan',
+    note:'Investor B = investor yang <b>telah didaftarkan</b> pada e-SBN oleh Midis lain. Alur: Registrasi → Update Profile/Data Investor → Pemesanan &amp; Pembayaran ST.' },
+
+  { t:'sub', id:'B.1', title:'B.1 Registrasi Investor B' },
+  { t:'item', id:'B.1.a', p:'Masuk menu <b>Registrasi</b> e-SBN.', o:'Menu registrasi e-SBN dapat diakses; halaman/form registrasi terbuka tanpa error.' },
+  { t:'item', id:'B.1.b', p:'Muncul <b>form registrasi</b> lengkap.', o:'Form registrasi tampil dan dapat diisi, minimal terdapat field:<ol class="alpha"><li>Nama</li><li>SID</li><li>Rekening Dana</li><li>Rekening Surat Berharga</li></ol>' },
+  { t:'item', id:'B.1.c', p:'Input data <b>Investor B</b> (gunakan data investor B pada tabel referensi di atas).', o:'Data investor B dapat diinput; sistem mengenali SID yang telah terdaftar di e-SBN oleh Midis lain (tidak terjadi duplikasi/penolakan yang salah).' },
+  { t:'item', id:'B.1.d', p:'<b>Disclaimer, Ketentuan &amp; Syarat</b> pada proses Registrasi<br><span class="ref">mengikuti ketentuan pada Tabel 1 poin 1</span>', o: KETENTUAN_REGISTRASI },
+  { t:'item', id:'B.1.e', p:'Submit data registrasi.', o:'Data berhasil di-<b>submit</b> pada sistem Midis dan <b>investor menerima notifikasi</b>.' },
+  { t:'item', id:'B.1.f', p:'Perekaman data ke Database e-SBN.', o:'Data investor B berhasil di-<b>update</b> di Database e-SBN. <span class="ref">Koordinasi dengan evaluator</span>' },
+
+  { t:'sub', id:'B.2', title:'B.2 Update Profile / Data Investor' },
+  { t:'item', id:'B.2.a', p:'Mengubah data investor B, yaitu data: <b>profesi, no. handphone, alamat e-mail, perubahan alamat, kota, propinsi</b>.', o:'Seluruh data dapat diubah dan tersimpan. <span class="ref">Sertakan screenshot sebelum &amp; sesudah perubahan.</span>' },
+  { t:'item', id:'B.2.b', p:'Perekaman perubahan ke Database e-SBN.', o:'Data investor B berhasil di-<b>update</b> di Database e-SBN. <span class="ref">Koordinasi dengan evaluator</span>' },
+
+  { t:'sub', id:'B.3', title:'B.3 Pemesanan &amp; Pembayaran ST' },
+  { t:'item', id:'B.3.a', p:'Investor B masuk ke menu <b>Pemesanan</b>.', o:'Menampilkan seri yang sedang ditawarkan. <span class="ref">Koordinasi dengan Evaluator untuk membuka seri SBSN pada environment development — parameter: min pemesanan Rp1 juta, max pemesanan Rp3 miliar, kelipatan Rp1 juta, kuota nasional Rp3 triliun.</span>' },
+  { t:'item', id:'B.3.b', p:'Pilih <b>seri ST</b> yang sedang dibuka.', o:'Menampilkan form pemesanan dan <b>informasi umum produk/seri</b>, paling sedikit memuat: nama produk/seri, masa penawaran (tanggal dan jam), kupon, tanggal setelmen (tanggal), jatuh tempo, kuota nasional, minimal order, kelipatan pemesanan, kuota per individu.' },
+  { t:'item', id:'B.3.c1', p:'Mengisi data pemesanan — <b>Pemesanan ST Rp500.000</b>', o:'<span class="ng">GAGAL</span> — muncul error message <b>“Kurang dari minimal pemesanan”</b>. <span class="ref">Sertakan screenshot error message.</span>' },
+  { t:'item', id:'B.3.c2', p:'Mengisi data pemesanan — <b>Pemesanan ST Rp1.500.000</b>', o:'<span class="ng">GAGAL</span> — muncul error message <b>“Tidak sesuai kelipatan”</b>. <span class="ref">Sertakan screenshot error message.</span>' },
+  { t:'item', id:'B.3.c3', p:'Mengisi data pemesanan — <b>Pemesanan ST Rp3.000.000.001</b>', o:'<span class="ng">GAGAL</span> — muncul error message <b>“Melebihi kuota individu”</b>. <span class="ref">Sertakan screenshot error message.</span>' },
+  { t:'item', id:'B.3.c4', p:'Mengisi data pemesanan — <b>Pemesanan ST Rp1.000.000</b>', o:'<span class="ok">BERHASIL</span> — pemesanan diterima sistem. <span class="ref">Sertakan screenshot pemesanan berhasil.</span>' },
+  { t:'item', id:'B.3.c5', p:'Mengisi data pemesanan — <b>Pemesanan ST Rp2.999.000.000</b>', o:'<span class="ok">BERHASIL</span> — pemesanan diterima sistem. <span class="ref">Sertakan screenshot pemesanan berhasil.</span> <span class="ref">Transaksi ini menjadi dasar pengujian early redemption pada Bagian C.</span>' },
+  { t:'item', id:'B.3.d', p:'<b>Disclaimer, Ketentuan &amp; Syarat</b> pada proses Pemesanan<br><span class="ref">mengikuti ketentuan pada Tabel 1 poin 2</span>', o: KETENTUAN_PEMESANAN },
+  { t:'item', id:'B.3.e', p:'Submit &amp; perekaman pemesanan.', o:'Data berhasil di-submit dan <b>tercatat pada sistem e-SBN</b>. <span class="ref">Koordinasi dengan evaluator</span>' },
+  { t:'item', id:'B.3.f', p:'Cek menu <b>portofolio investor / monitoring pemesanan / historis pemesanan</b> Investor B.<br><span class="ref">(opsional, menyesuaikan fitur masing-masing Midis)</span>', o:'Seluruh transaksi tercatat. Data setiap pemesanan yang ditampilkan meliputi:<ul class="dash"><li>Nama produk/seri</li><li>Kode Pemesanan</li><li>Status (<i>Verified order, Completed order</i>)</li><li>Kode Billing</li><li>NTPN</li><li>Nominal</li><li>Batas Waktu Pembayaran</li></ul><span class="ref">Tahap pembayaran untuk Mock – Development Line dilakukan secara otomatis oleh sistem e-SBN.</span>' },
+  { t:'item', id:'B.3.g', p:'Masuk kembali ke <b>form pemesanan ST</b>.', o:'<b>Kuota individu dan kuota nasional berkurang</b> sesuai pemesanan yang telah dilakukan. <span class="ref">Tampilkan screenshot kuota individu &amp; kuota nasional.</span>' },
+
+  { t:'part', id:'C', title:'BAGIAN C — PENGUJIAN EARLY REDEMPTION (Investor A &amp; Investor B)',
+    note:'Parameter early redemption pada environment development: <b>minimal kepemilikan untuk early redemption Rp2 juta, minimal early redemption Rp1 juta, maksimal early redemption = 50% dari pemesanan</b> — early redemption dihitung per pemesanan. <span class="ref">Koordinasi dengan Evaluator untuk membuka seri.</span>' },
+
+  { t:'sub', id:'C.1', title:'C.1 Investor A — Cek Menu Early Redemption' },
+  { t:'item', id:'C.1.a', p:'Investor A masuk ke menu <b>Early Redemption</b>.', o:'Menu early redemption dapat diakses dan <b>menampilkan seri yang sedang ditawarkan</b> untuk early redemption.' },
+  { t:'item', id:'C.1.b', p:'Cek eligibilitas transaksi Investor A untuk early redemption.', o:'Transaksi yang <b>tidak memenuhi</b> minimal kepemilikan (mis. pemesanan SR Rp1.000) <b>tidak dapat</b> diajukan early redemption; transaksi yang memenuhi syarat tampil pada daftar. <span class="ref">Sertakan screenshot daftar transaksi/kepemilikan investor A.</span>' },
+
+  { t:'sub', id:'C.2', title:'C.2 Investor B — Early Redemption ST' },
+  { t:'item', id:'C.2.a', p:'Investor B masuk ke menu <b>Early Redemption</b>.', o:'Menampilkan seri yang sedang ditawarkan. <span class="ref">Koordinasi dengan Evaluator untuk membuka seri SBSN pada environment development — parameter: minimal kepemilikan untuk early redemption Rp2 juta, minimal early redemption Rp1 juta, max early redemption = 50% dari pemesanan (early redemption per pemesanan).</span>' },
+  { t:'item', id:'C.2.b', p:'Pilih <b>seri ST</b> yang sedang dibuka untuk early redemption.', o:'Menampilkan <b>form early redemption</b> yang memuat data: nama produk/seri, masa early redemption (tanggal dan jam), tanggal setelmen, maksimal early redemption, kelipatan early redemption, kode pemesanan.' },
+  { t:'item', id:'C.2.c1', p:'Mengisi form redemption — <b>Redeem pada transaksi Rp1.000.000</b>', o:'<span class="ng">GAGAL</span> — early redemption <b>tidak dapat dilakukan</b> (kepemilikan di bawah minimal Rp2 juta). <span class="ref">Sertakan screenshot tidak dapat dilakukan.</span>' },
+  { t:'item', id:'C.2.c2', p:'Mengisi form redemption — <b>Redeem transaksi Rp2.999.000.000 sebesar Rp500.000</b>', o:'<span class="ng">GAGAL</span> — muncul error message <b>“Kurang dari minimal early redemption”</b>. <span class="ref">Sertakan screenshot error message.</span>' },
+  { t:'item', id:'C.2.c3', p:'Mengisi form redemption — <b>Redeem transaksi Rp2.999.000.000 sebesar Rp1.500.000</b>', o:'<span class="ng">GAGAL</span> — muncul error message <b>“Tidak sesuai kelipatan early redemption”</b>. <span class="ref">Sertakan screenshot error message.</span>' },
+  { t:'item', id:'C.2.c4', p:'Mengisi form redemption — <b>Redeem transaksi Rp2.999.000.000 sebesar Rp1.500.000.000</b>', o:'<span class="ng">GAGAL</span> — muncul error message <b>“Melebihi kuota early redemption”</b>. <span class="ref">Sertakan screenshot error message.</span>' },
+  { t:'item', id:'C.2.c5', p:'Mengisi form redemption — <b>Redeem transaksi Rp2.999.000.000 sebesar Rp1.000.000.000</b>', o:'<span class="ok">BERHASIL</span> — early redemption diterima sistem. <span class="ref">Sertakan screenshot early redemption berhasil.</span>' },
+  { t:'item', id:'C.2.c6', p:'Mengisi form redemption — <b>Redeem transaksi Rp2.999.000.000 sebesar Rp500.000.000</b>', o:'<span class="ng">GAGAL</span> — muncul error message <b>“Melebihi kuota early redemption”</b>. <span class="ref">Sertakan screenshot error message.</span>' },
+  { t:'item', id:'C.2.c7', p:'Mengisi form redemption — <b>Redeem transaksi Rp2.999.000.000 sebesar Rp499.500.000</b>', o:'<span class="ng">GAGAL</span> — muncul error message <b>“Tidak sesuai kelipatan early redemption”</b>. <span class="ref">Sertakan screenshot error message.</span>' },
+  { t:'item', id:'C.2.c8', p:'Mengisi form redemption — <b>Redeem transaksi Rp2.999.000.000 sebesar Rp499.000.000</b>', o:'<span class="ok">BERHASIL</span> — early redemption diterima sistem. <span class="ref">Sertakan screenshot early redemption berhasil.</span>' },
+  { t:'item', id:'C.2.d', p:'<b>Disclaimer</b> pada proses Early Redemption<br><span class="ref">mengikuti ketentuan pada Tabel 1 poin 3</span>', o: KETENTUAN_REDEMPTION },
+  { t:'item', id:'C.2.e', p:'Submit &amp; perekaman early redemption.', o:'Data berhasil di-submit dan <b>tercatat pada sistem e-SBN</b>. <span class="ref">Koordinasi dengan evaluator</span>' },
+  { t:'item', id:'C.2.f', p:'Cek menu <b>portofolio investor / monitoring pemesanan / historis pemesanan</b>.<br><span class="ref">(opsional, menyesuaikan fitur masing-masing Midis)</span>', o:'Seluruh transaksi tercatat. Data yang ditampilkan meliputi: <b>Nama produk/seri, kode pemesanan, kode early redemption, nominal &amp; status</b>.' },
+  { t:'item', id:'C.2.g', p:'Masuk kembali ke <b>form early redemption ST</b>.', o:'<b>Kuota early redemption berkurang</b> sesuai early redemption yang telah dilakukan. <span class="ref">Tampilkan screenshot kuota early redemption.</span>' },
+
+  { t:'part', id:'D', title:'BAGIAN D — CEK EMAIL KONFIRMASI YANG DITERIMA INVESTOR' },
+  { t:'sub', id:'D.1', title:'D.1 Email Investor A' },
+  { t:'item', id:'D.1.a', p:'Tampilkan e-mail yang diperoleh <b>Investor A</b> pada proses <b>Registrasi</b>.', o:'E-mail konfirmasi registrasi diterima investor A; isi, istilah, dan format sesuai Memo Info/ketentuan DJPPR. <span class="ref">Sertakan screenshot e-mail.</span>' },
+  { t:'item', id:'D.1.b', p:'Tampilkan e-mail yang diperoleh <b>Investor A</b> pada proses <b>Pemesanan</b>.', o:'E-mail konfirmasi pemesanan diterima investor A (memuat kode pemesanan/kode billing/nominal sesuai transaksi). <span class="ref">Sertakan screenshot e-mail.</span>' },
+  { t:'item', id:'D.1.c', p:'Tampilkan e-mail yang diperoleh <b>Investor A</b> pada proses <b>Early Redemption</b>.', o:'E-mail konfirmasi early redemption diterima investor A (bila terdapat transaksi early redemption yang eligible). <span class="ref">Sertakan screenshot e-mail.</span>' },
+  { t:'sub', id:'D.2', title:'D.2 Email Investor B' },
+  { t:'item', id:'D.2.a', p:'Tampilkan e-mail yang diperoleh <b>Investor B</b> pada proses <b>Registrasi</b>.', o:'E-mail konfirmasi registrasi diterima investor B; isi, istilah, dan format sesuai Memo Info/ketentuan DJPPR. <span class="ref">Sertakan screenshot e-mail.</span>' },
+  { t:'item', id:'D.2.b', p:'Tampilkan e-mail yang diperoleh <b>Investor B</b> pada proses <b>Pemesanan</b>.', o:'E-mail konfirmasi pemesanan diterima investor B (memuat kode pemesanan/kode billing/nominal sesuai transaksi). <span class="ref">Sertakan screenshot e-mail.</span>' },
+  { t:'item', id:'D.2.c', p:'Tampilkan e-mail yang diperoleh <b>Investor B</b> pada proses <b>Early Redemption</b>.', o:'E-mail konfirmasi early redemption diterima investor B. <span class="ref">Sertakan screenshot e-mail.</span>' }
+];
+
+
+/* ---------------- data investor (dapat diubah & ditambah) ---------------- */
+const SEED = {
+  A: [ {nama:'', sid:'', ktp:'', lahir:'', email:'', ket:'Investor baru untuk pengujian registrasi'} ],
+  B: [ {nama:'', sid:'', ktp:'', lahir:'', email:'', ket:'Sudah terdaftar e-SBN oleh Midis lain'},
+       {nama:'', sid:'', ktp:'', lahir:'', email:'', ket:''},
+       {nama:'', sid:'', ktp:'', lahir:'', email:'', ket:''} ]
+};
+const INVF = ['nama','sid','ktp','lahir','email','ket'];
+const PH = {nama:'Nama lengkap investor', sid:'IDDxxxxxxxxxxxx', ktp:'16 digit', lahir:'dd Mmm yyyy', email:'nama@email.com', ket:'catatan'};
+
+function addInv(t, d, silent){
+  d = d || {};
+  const tr = document.createElement('tr');
+  let html = '<td class="n"></td>';
+  INVF.forEach(f=>{ html += '<td><input data-f="'+f+'" value="'+esc(d[f]||'')+'" placeholder="'+PH[f]+'" oninput="syncInvSelect()"></td>'; });
+  html += '<td class="a"><button class="rm" title="Hapus baris" onclick="delInv(this,\''+t+'\')">&times;</button></td>';
+  tr.innerHTML = html;
+  document.getElementById('inv'+t).appendChild(tr);
+  if(!silent){ renumber(t); syncInvSelect(); tr.querySelector('input').focus(); }
+}
+function delInv(btn,t){
+  const body=document.getElementById('inv'+t);
+  if(body.rows.length<=1){ [...btn.closest('tr').querySelectorAll('input')].forEach(i=>i.value=''); }
+  else btn.closest('tr').remove();
+  renumber(t); syncInvSelect();
+}
+function renumber(t){
+  [...document.getElementById('inv'+t).rows].forEach((r,i)=>r.cells[0].textContent=(i+1)+'.');
+}
+function readInv(t){
+  return [...document.getElementById('inv'+t).rows].map(r=>{
+    const o={}; INVF.forEach(f=>o[f]=r.querySelector('[data-f="'+f+'"]').value); return o;
+  });
+}
+function setInv(t,list){
+  const body=document.getElementById('inv'+t); body.innerHTML='';
+  (list && list.length ? list : SEED[t]).forEach(d=>addInv(t,d,true));
+  renumber(t);
+}
+function syncInvSelect(){
+  ['A','B'].forEach(t=>{
+    const sel=document.getElementById('m_inv'+t), prev=sel.value;
+    const opts=readInv(t).map(d=>{
+      const lbl=[d.nama,d.sid].filter(Boolean).join(' — ');
+      return lbl||'';
+    }).filter(Boolean);
+    sel.innerHTML='<option value="">— belum dipilih —</option>'+opts.map(o=>'<option>'+esc(o)+'</option>').join('');
+    if(opts.indexOf(prev)>-1) sel.value=prev; else if(opts.length===1) sel.value=opts[0];
+  });
+}
+
+/* ---------------- render ---------------- */
+const tb = document.getElementById('tbody');
+const esc = s => String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const stripHTML = h => { const d=document.createElement('div'); d.innerHTML=h; return d.textContent.replace(/\s+/g,' ').trim(); };
+
+DATA.forEach(row=>{
+  const tr = document.createElement('tr');
+  if(row.t==='part'){
+    tr.className='part';
+    tr.innerHTML = '<td colspan="4">'+row.title+(row.note?'<span class="note">'+row.note+'</span>':'')+'</td>';
+  } else if(row.t==='sub'){
+    tr.className='sub';
+    tr.innerHTML = '<td colspan="4">'+row.title+'</td>';
+  } else {
+    tr.className='item'; tr.dataset.id=row.id;
+    const long = row.o.indexOf('tbl1')>-1;
+    tr.innerHTML =
+      '<td class="no">'+row.id+'</td>'+
+      '<td class="proses">'+row.p+'</td>'+
+      '<td class="output'+(long?' collapsed':'')+'">'+row.o+(long?'<span class="more" onclick="this.parentNode.classList.toggle(\'collapsed\')">Tampilkan / sembunyikan detail ketentuan</span>':'')+'</td>'+
+      '<td class="result">'+
+        '<div class="res">'+
+          '<div class="radios">'+
+            '<label><input type="radio" name="r_'+row.id+'" value="P" onchange="mark(this)"> Pass</label>'+
+            '<label><input type="radio" name="r_'+row.id+'" value="F" onchange="mark(this)"> Fail</label>'+
+            '<label><input type="radio" name="r_'+row.id+'" value="N" onchange="mark(this)"> N/A</label>'+
+          '</div>'+
+          '<textarea class="note" placeholder="Catatan / temuan / nomor tiket..."></textarea>'+
+          '<div class="shots"></div>'+
+          '<div><button class="addshot" onclick="pick(\''+row.id+'\')">+ Screenshot</button> '+
+          '<span class="hint">atau klik area ini lalu tempel (Ctrl+V)</span></div>'+
+        '</div>'+
+      '</td>';
+  }
+  tb.appendChild(tr);
+});
+
+/* ---------------- status ---------------- */
+function mark(inp){
+  const tr = inp.closest('tr');
+  tr.classList.remove('st-pass','st-fail','st-na');
+  tr.classList.add(inp.value==='P'?'st-pass':inp.value==='F'?'st-fail':'st-na');
+  tr.querySelectorAll('.radios label').forEach(l=>{
+    l.classList.remove('sel-p','sel-f','sel-n');
+    const r=l.querySelector('input');
+    if(r.checked) l.classList.add(r.value==='P'?'sel-p':r.value==='F'?'sel-f':'sel-n');
+  });
+  stats(); applyFilter();
+}
+function setAll(v){
+  document.querySelectorAll('tr.item').forEach(tr=>{
+    tr.classList.remove('st-pass','st-fail','st-na');
+    tr.querySelectorAll('.radios input').forEach(r=>r.checked=false);
+    tr.querySelectorAll('.radios label').forEach(l=>l.classList.remove('sel-p','sel-f','sel-n'));
+  });
+  stats(); applyFilter();
+}
+function stats(){
+  const items=[...document.querySelectorAll('tr.item')];
+  let p=0,f=0,n=0;
+  items.forEach(tr=>{const c=tr.querySelector('.radios input:checked'); if(!c)return;
+    if(c.value==='P')p++; else if(c.value==='F')f++; else n++;});
+  const done=p+f+n, tot=items.length;
+  document.getElementById('s-tot').textContent=done+'/'+tot+' terisi';
+  document.getElementById('s-p').textContent='Pass '+p;
+  document.getElementById('s-f').textContent='Fail '+f;
+  document.getElementById('s-n').textContent='N/A '+n;
+  document.getElementById('s-bar').style.width=(tot?Math.round(done/tot*100):0)+'%';
+}
+function applyFilter(){
+  const v=document.getElementById('filter').value;
+  document.querySelectorAll('tr.item').forEach(tr=>{
+    const c=tr.querySelector('.radios input:checked');
+    const val=c?c.value:'';
+    let show=true;
+    if(v==='empty') show = !c;
+    else if(v==='fail') show = val==='F';
+    else if(v==='pass') show = val==='P';
+    tr.style.display = show?'':'none';
+  });
+}
+function toggleAll(){
+  const any=[...document.querySelectorAll('td.output.collapsed')].length>0;
+  document.querySelectorAll('td.output .tbl1').forEach(el=>{
+    el.parentNode.classList.toggle('collapsed', !any);
+  });
+}
+
+/* ---------------- screenshots ---------------- */
+let activeId=null;
+const fileInput=document.createElement('input');
+fileInput.type='file'; fileInput.accept='image/*'; fileInput.multiple=true;
+fileInput.onchange=()=>{[...fileInput.files].forEach(f=>readImg(f,activeId)); fileInput.value='';};
+function pick(id){activeId=id; fileInput.click();}
+function readImg(file,id){
+  const r=new FileReader();
+  r.onload=e=>addShot(id,e.target.result);
+  r.readAsDataURL(file);
+}
+function addShot(id,src){
+  const tr=document.querySelector('tr.item[data-id="'+CSS.escape(id)+'"]'); if(!tr)return;
+  const box=tr.querySelector('.shots');
+  const d=document.createElement('div'); d.className='shot';
+  d.innerHTML='<img src="'+src+'" alt="screenshot"><button class="del" title="Hapus" onclick="event.stopPropagation();this.parentNode.remove()">&times;</button>';
+  d.querySelector('img').onclick=()=>{document.getElementById('lbimg').src=src;document.getElementById('lb').style.display='flex';};
+  box.appendChild(d);
+}
+document.addEventListener('paste',e=>{
+  const tr=document.activeElement && document.activeElement.closest ? document.activeElement.closest('tr.item') : null;
+  const target = tr ? tr.dataset.id : activeId;
+  if(!target) return;
+  const items=e.clipboardData ? e.clipboardData.items : [];
+  for(const it of items){ if(it.type.indexOf('image')===0){ readImg(it.getAsFile(),target); e.preventDefault(); } }
+});
+document.addEventListener('click',e=>{const tr=e.target.closest && e.target.closest('tr.item'); if(tr) activeId=tr.dataset.id;});
+
+/* ---------------- export / persist ---------------- */
+const META=['m_midis','m_eval','m_tgl','m_env','m_sr','m_st','m_invA','m_invB'];
+function collect(){
+  const meta={}; META.forEach(k=>meta[k]=document.getElementById(k).value);
+  const rows=[...document.querySelectorAll('tr.item')].map(tr=>({
+    id:tr.dataset.id,
+    status:(tr.querySelector('.radios input:checked')||{}).value||'',
+    note:tr.querySelector('textarea.note').value,
+    shots:[...tr.querySelectorAll('.shot img')].map(i=>i.src)
+  }));
+  return {meta, investors:{A:readInv('A'), B:readInv('B')}, rows};
+}
+function saveJSON(){
+  const blob=new Blob([JSON.stringify(collect())],{type:'application/json'});
+  dl(blob,'progres-checklist-sbsn-'+stamp()+'.json');
+}
+function loadJSON(inp){
+  const f=inp.files[0]; if(!f)return;
+  const r=new FileReader();
+  r.onload=e=>{
+    try{
+      const d=JSON.parse(e.target.result);
+      if(d.investors){ setInv('A',d.investors.A); setInv('B',d.investors.B); }
+      syncInvSelect();
+      META.forEach(k=>{if(d.meta&&d.meta[k]!=null)document.getElementById(k).value=d.meta[k];});
+      (d.rows||[]).forEach(row=>{
+        const tr=document.querySelector('tr.item[data-id="'+CSS.escape(row.id)+'"]'); if(!tr)return;
+        tr.querySelector('textarea.note').value=row.note||'';
+        tr.querySelectorAll('.shot').forEach(s=>s.remove());
+        (row.shots||[]).forEach(s=>addShot(row.id,s));
+        if(row.status){const el=tr.querySelector('.radios input[value="'+row.status+'"]'); if(el){el.checked=true; mark(el);} }
+      });
+      stats(); applyFilter();
+    }catch(err){ alert('Berkas progres tidak dapat dibaca.'); }
+    inp.value='';
+  };
+  r.readAsText(f);
+}
+const LBL={P:'Pass',F:'Fail',N:'N/A','':'Belum diuji'};
+function exportCSV(){
+  const q=s=>'"'+String(s==null?'':s).replace(/"/g,'""')+'"';
+  const L=[];
+  L.push(['Checklist Simulasi Demo Sistem Transaksi SBSN Ritel Online'].map(q).join(';'));
+  L.push(['Mitra Distribusi',document.getElementById('m_midis').value].map(q).join(';'));
+  L.push(['Evaluator',document.getElementById('m_eval').value].map(q).join(';'));
+  L.push(['Tanggal Pengujian',document.getElementById('m_tgl').value].map(q).join(';'));
+  L.push(['Environment',document.getElementById('m_env').value].map(q).join(';'));
+  L.push(['Seri SR',document.getElementById('m_sr').value,'Seri ST',document.getElementById('m_st').value].map(q).join(';'));
+  L.push(['Investor A aktif',document.getElementById('m_invA').value,'Investor B aktif',document.getElementById('m_invB').value].map(q).join(';'));
+  L.push('');
+  L.push(['DATA INVESTOR PENGUJIAN'].map(q).join(';'));
+  L.push(['Tipe','No.','Nama Investor','Nomor SID','No. KTP','Tanggal Lahir','Alamat E-mail','Keterangan'].map(q).join(';'));
+  ['A','B'].forEach(t=>readInv(t).forEach((d,i)=>{
+    if(INVF.every(f=>!d[f])) return;
+    L.push(['Investor '+t,i+1,d.nama,d.sid,d.ktp,d.lahir,d.email,d.ket].map(q).join(';'));
+  }));
+  L.push('');
+  L.push(['Bagian','No.','Proses','Output yang Diharapkan','Status','Catatan','Jml Screenshot'].map(q).join(';'));
+  let part='',sub='';
+  [...document.querySelectorAll('#tbody tr')].forEach(tr=>{
+    if(tr.classList.contains('part')){part=stripHTML(tr.textContent);sub='';return;}
+    if(tr.classList.contains('sub')){sub=stripHTML(tr.textContent);return;}
+    const c=tr.querySelector('.radios input:checked');
+    L.push([ (part+(sub?' | '+sub:'')),
+             tr.dataset.id,
+             stripHTML(tr.querySelector('td.proses').innerHTML),
+             stripHTML(tr.querySelector('td.output').innerHTML).replace(/Tampilkan \/ sembunyikan detail ketentuan$/,''),
+             LBL[c?c.value:''],
+             tr.querySelector('textarea.note').value,
+             tr.querySelectorAll('.shot').length ].map(q).join(';'));
+  });
+  const blob=new Blob(['﻿'+L.join('\r\n')],{type:'text/csv;charset=utf-8;'});
+  dl(blob,'hasil-checklist-sbsn-'+stamp()+'.csv');
+}
+function dl(blob,name){
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=name;
+  document.body.appendChild(a); a.click(); setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},400);
+}
+function stamp(){const d=new Date(),z=n=>String(n).padStart(2,'0');
+  return d.getFullYear()+z(d.getMonth()+1)+z(d.getDate())+'-'+z(d.getHours())+z(d.getMinutes());}
+
+document.getElementById('m_tgl').valueAsDate=new Date();
+setInv('A'); setInv('B'); syncInvSelect();
+function syncToolbar(){
+  const tb=document.querySelector('.toolbar');
+  if(tb) document.documentElement.style.setProperty('--tbh',(tb.offsetHeight+14)+'px');
+}
+window.addEventListener('resize',syncToolbar); syncToolbar();
+let _refWasOpen=false;
+window.addEventListener('beforeprint',()=>{const d=document.querySelector('details.ref-box');_refWasOpen=d.open;d.open=true;});
+window.addEventListener('afterprint',()=>{document.querySelector('details.ref-box').open=_refWasOpen;});
+stats();
+</script>
+</body>
+</html>

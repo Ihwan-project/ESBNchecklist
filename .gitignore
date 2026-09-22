@@ -1,0 +1,7 @@
+# Berkas hasil pengisian checklist — berisi data investor, jangan diunggah
+*.json
+*.csv
+*.pdf
+*.xlsx
+screenshot*/
+lampiran/
