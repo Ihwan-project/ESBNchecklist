@@ -5,7 +5,7 @@ Direktorat Jenderal Pengelolaan Pembiayaan dan Risiko (DJPPR) — Kementerian Ke
 
 ## Buka formulir
 
-👉 **https://ihwan-project.github.io/checklist-pengujian-sbsn/**
+👉 **https://USERNAME.github.io/checklist-pengujian-sbsn/**
 
 _(ganti `USERNAME` dengan nama akun GitHub Anda setelah GitHub Pages aktif)_
 
